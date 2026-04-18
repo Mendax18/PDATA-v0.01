@@ -129,6 +129,10 @@ export async function fetchNewestDAOs(): Promise<NewestDAO[]> {
 // Fallback data in case the API call fails
 function getFallbackDAOs(): NewestDAO[] {
   return [
+    { name: "FactBrah", hasToken: true, proposal_count: 7, member_count: 198 },
+    { name: "Solcentral By Guardian Platform", hasToken: true, proposal_count: 5, member_count: 142 },
+    { name: "Sol Man", hasToken: true, proposal_count: 9, member_count: 223 },
+    { name: "Digi Mentor DAO", hasToken: true, proposal_count: 4, member_count: 87 },
     { name: "Jupiter", hasToken: true, proposal_count: 12, member_count: 345 },
     { name: "Kamino", hasToken: true, proposal_count: 8, member_count: 156 },
     { name: "Drift", hasToken: true, proposal_count: 15, member_count: 278 },
