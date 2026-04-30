@@ -55,9 +55,9 @@ function debugChartData(name, data) {
 }
 
 const daoGrowthData = [
-  { month: "May 2025", newDaos: 151, totalDaos: 151 },
-  { month: "June 2025", newDaos: 44, totalDaos: 195 },
-  { month: "July 2025", newDaos: 34, totalDaos: 229 },
+  { month: "Feb 2026", newDaos: 26, totalDaos: 26 },
+  { month: "Mar 2026", newDaos: 45, totalDaos: 71 },
+  { month: "Apr 2026", newDaos: 18, totalDaos: 89 },
 ]
 
 // Debug DAO growth data
