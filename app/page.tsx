@@ -40,8 +40,9 @@ import { DAODetailsModal } from "@/components/dao-details-modal"
 import { NewestDAOs } from "@/components/newest-daos"
 import { getDAOLogo, defaultLogo } from "@/components/dao-logos"
 import { fetchDuneProposals, type DailyProposalData } from "@/actions/fetch-dune-proposals"
-import { getDAOData } from "@/actions/flipside-query"
-import { Badge } from "@/components/ui/badge"
+  import { ProtocolDashboard } from "@/components/protocols/protocol-dashboard"
+  import { protocolMeta, type ProtocolId } from "@/data/protocol-analytics"
+  import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 
 // Add debugging function to help diagnose chart issues
@@ -55,9 +56,9 @@ function debugChartData(name, data) {
 }
 
 const daoGrowthData = [
-  { month: "May 2025", newDaos: 151, totalDaos: 151 },
-  { month: "June 2025", newDaos: 44, totalDaos: 195 },
-  { month: "July 2025", newDaos: 34, totalDaos: 229 },
+  { month: "Feb 2026", newDaos: 26, totalDaos: 26 },
+  { month: "Mar 2026", newDaos: 45, totalDaos: 71 },
+  { month: "Apr 2026", newDaos: 18, totalDaos: 89 },
 ]
 
 // Debug DAO growth data
@@ -84,7 +85,7 @@ const fallbackProposalsData = [
 // Debug fallback proposals data
 debugChartData("Fallback Proposals Data", fallbackProposalsData)
 
-// Comprehensive fallback DAO data structure - this will be merged with Flipside data
+// Comprehensive fallback DAO data structure used alongside Dune proposal activity
 const fallbackDAOData = {
   // New DAOs
   FactBrah: {
@@ -1115,7 +1116,7 @@ const fallbackDAOData = {
       },
     ],
   },
-  // Additional DAOs that might be in Flipside but not in our main list
+  // Additional DAOs included in the curated Realms dataset
   "Xandeum DAO": {
     description: "Xandeum DAO governance for the Xandeum ecosystem.",
     members: 25,
@@ -1389,9 +1390,9 @@ export default function SolanaDAODashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [sortField, setSortField] = useState<SortField>("tvl")
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
-  const [daoDetails, setDaoDetails] = useState(fallbackDAOData)
+  const [daoDetails] = useState(fallbackDAOData)
   const [isLoadingProposals, setIsLoadingProposals] = useState(true)
-  const [isLoadingDAOData, setIsLoadingDAOData] = useState(true)
+  const [activeProtocol, setActiveProtocol] = useState<ProtocolId>("realms")
   const [dailyProposalsData, setDailyProposalsData] = useState<DailyProposalData[]>(fallbackProposalsData)
   const [activeCategory, setActiveCategory] = useState(0)
   const [touchStartX, setTouchStartX] = useState(0)
@@ -1434,103 +1435,6 @@ export default function SolanaDAODashboard() {
   // Add new state variables for Daily Proposals analytics
   const [proposalTimeRange, setProposalTimeRange] = useState<"7d" | "14d" | "30d" | "all">("all")
   const [proposalChartType, setProposalChartType] = useState<"line" | "bar" | "area">("line")
-
-  // Enhanced Flipside data loading with comprehensive mapping
-  useEffect(() => {
-    async function loadFlipsideDAOData() {
-      try {
-        setIsLoadingDAOData(true)
-        console.log("Loading DAO data from mock Flipside API...")
-        const result = await getDAOData()
-
-        if (result.success && result.data && result.data.records) {
-          console.log("Mock Flipside DAO data loaded successfully:", result.data.records)
-
-          // Create a new data structure starting with fallback data
-          const updatedDAOData = { ...fallbackDAOData }
-
-          // Process each record from mock Flipside
-          result.data.records.forEach((record: any) => {
-            const daoName = record.DAO
-            if (daoName && daoName.trim() !== "") {
-              console.log(`Processing DAO: ${daoName}`)
-              console.log(
-                `Members: ${record.NUMBER_OF_MEMBERS}, Votes: ${record.TOTAL_VOTES}, Proposals: ${record.NUMBER_OF_PROPOSALS}`,
-              )
-
-              // Update the DAO data with mock Flipside values, preserving existing structure
-              if (updatedDAOData[daoName]) {
-                // DAO exists in fallback data - update with mock Flipside data
-                updatedDAOData[daoName] = {
-                  ...updatedDAOData[daoName], // Keep all existing data (description, treasuryAllocation, etc.)
-                  members: record.NUMBER_OF_MEMBERS || updatedDAOData[daoName].members || 0,
-                  votes: record.TOTAL_VOTES || updatedDAOData[daoName].votes || 0,
-                  proposals: record.NUMBER_OF_PROPOSALS || updatedDAOData[daoName].proposals || 0,
-                  // Keep existing TVL and other data
-                }
-              } else {
-                // DAO doesn't exist in fallback data - create new entry
-                updatedDAOData[daoName] = {
-                  description: `${daoName} governance on Solana.`,
-                  members: record.NUMBER_OF_MEMBERS || 0,
-                  votes: record.TOTAL_VOTES || 0,
-                  proposals: record.NUMBER_OF_PROPOSALS || 0,
-                  tvl: 0, // Default TVL since mock Flipside doesn't provide this
-                  treasuryAllocation: [
-                    { name: "Development", value: 50 },
-                    { name: "Operations", value: 30 },
-                    { name: "Community", value: 20 },
-                  ],
-                  monthlyActivity: [
-                    { month: "Oct", transactions: 1000, newMembers: 5 },
-                    { month: "Nov", transactions: 1200, newMembers: 6 },
-                    { month: "Dec", transactions: 1100, newMembers: 5 },
-                    { month: "Jan", transactions: 1300, newMembers: 7 },
-                    { month: "Feb", transactions: 1400, newMembers: 6 },
-                    { month: "Mar", transactions: 1250, newMembers: 5 },
-                  ],
-                  governance: {
-                    votingPower: Math.max(record.TOTAL_VOTES * 10, 50000),
-                    quorum: 15,
-                    proposalThreshold: Math.max(record.NUMBER_OF_MEMBERS * 100, 5000),
-                    votingPeriod: 5,
-                  },
-                  recentProposals: [
-                    {
-                      id: "PROP-001",
-                      title: "Governance Framework Setup",
-                      status: "Completed",
-                      completedAgo: "Completed 15 days ago",
-                      yesVotes: Math.floor(record.NUMBER_OF_MEMBERS * 0.8),
-                      noVotes: Math.floor(record.NUMBER_OF_MEMBERS * 0.2),
-                      votes: record.NUMBER_OF_MEMBERS,
-                    },
-                  ],
-                }
-              }
-            }
-          })
-
-          console.log("Final DAO data keys:", Object.keys(updatedDAOData))
-          console.log("Sample updated DAO (BonkDAO):", updatedDAOData["BonkDAO"])
-          console.log("Sample updated DAO (IslandDAO):", updatedDAOData["IslandDAO"])
-
-          setDaoDetails(updatedDAOData)
-          console.log("DAO data successfully updated with mock Flipside results")
-        } else {
-          console.warn("No DAO data returned from mock Flipside query, using fallback data")
-          setDaoDetails(fallbackDAOData)
-        }
-      } catch (error) {
-        console.error("Failed to load mock Flipside DAO data:", error)
-        setDaoDetails(fallbackDAOData)
-      } finally {
-        setIsLoadingDAOData(false)
-      }
-    }
-
-    loadFlipsideDAOData()
-  }, [])
 
   // Fetch the Dune data when the component mounts
   useEffect(() => {
@@ -1741,7 +1645,24 @@ export default function SolanaDAODashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-orange-950 text-white">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-black via-gray-900 to-orange-950 text-white">
+      <header className="sticky top-0 z-40 border-b border-orange-800/30 bg-black/90 px-4 py-3 backdrop-blur-xl md:px-6">
+        <div className="mx-auto flex max-w-[1600px] flex-col justify-between gap-3 md:flex-row md:items-center">
+          <div className="flex items-center gap-3">
+            <Image src="/images/pandata-logo-new.png" alt="Pandata Aggregator" width={34} height={34} className="rounded-full bg-white p-1" />
+            <div><p className="text-sm font-bold text-orange-300">Governance Protocols</p><p className="text-xs text-gray-500">Solana governance intelligence</p></div>
+          </div>
+          <nav aria-label="Governance protocols" className="flex w-full gap-1 overflow-x-auto rounded-lg border border-orange-900/40 bg-black/60 p-1 md:w-auto">
+            {(["realms", "metadao", "squads"] as ProtocolId[]).map((protocol) => (
+              <button key={protocol} type="button" onClick={() => setActiveProtocol(protocol)} aria-pressed={activeProtocol === protocol} className={`min-w-28 rounded-md px-4 py-2 text-sm font-medium transition-colors ${activeProtocol === protocol ? "bg-orange-600/30 text-orange-200 shadow-inner shadow-orange-900/30" : "text-gray-400 hover:bg-orange-950/30 hover:text-orange-300"}`}>
+                {protocolMeta[protocol].name}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      {activeProtocol === "realms" ? <div className="flex min-h-0 flex-1">
       {/* Sidebar */}
       <aside className="w-64 bg-black/40 backdrop-blur-lg p-4 hidden lg:block border-r border-orange-800/30">
         <div className="flex items-center mb-6">
@@ -2881,13 +2802,8 @@ export default function SolanaDAODashboard() {
                 </div>
               )}
 
-              {isLoadingDAOData && (
-                <div className="flex items-center justify-center p-4">
-                  <div className="text-orange-400 text-sm">Loading mock DAO data (Flipside API deprecated)...</div>
-                </div>
-              )}
               <div className="text-xs text-gray-400 p-4 text-right">
-                Data source: Mock data (Flipside API deprecated - migrated to Snowflake)
+                Data source: Dune Analytics and curated protocol metadata
               </div>
             </CardContent>
           </Card>
@@ -2903,6 +2819,7 @@ export default function SolanaDAODashboard() {
           daoDetails={daoDetails[selectedDAO]}
         />
       )}
+      </div> : <ProtocolDashboard protocol={activeProtocol} />}
     </div>
   )
 }
