@@ -65,7 +65,7 @@ export function ProtocolDashboard({ protocol }: { protocol: Exclude<ProtocolId, 
             <h1 className="mt-3 text-balance text-2xl font-bold text-orange-200 md:text-3xl">{meta.name} analytics</h1>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-400">{meta.description}</p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-gray-400"><Clock3 className="h-4 w-4 text-green-400" /> Updated Mar 17, 2026</div>
+          <div className="flex items-center gap-2 text-xs text-gray-400"><Clock3 className="h-4 w-4 text-green-400" /> {isMetaDAO ? "Mock snapshot · Aug 15, 2026" : "Updated Mar 17, 2026"}</div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -100,7 +100,7 @@ export function ProtocolDashboard({ protocol }: { protocol: Exclude<ProtocolId, 
           <Card className="border-green-800/30 bg-black/50 shadow-lg">
             <CardHeader className="p-4"><CardTitle className="text-lg text-green-400">Protocol insights</CardTitle></CardHeader>
             <CardContent className="flex flex-col gap-3 p-4 pt-0">
-              {(isMetaDAO ? ["Market liquidity rose 28% over the last four weeks.", "Approval markets currently price a 19-point median spread.", "Three decisions are approaching their resolution window."] : ["Execution rate reached 93.4% across tracked transactions.", "4-of-7 is the most common threshold among high-value vaults.", "Signer activity increased for five consecutive weeks."]).map((text, index) => <div key={text} className="flex gap-3 rounded-lg border border-green-900/30 bg-green-950/20 p-3"><span className="font-mono text-xs text-green-500">0{index + 1}</span><p className="text-sm leading-6 text-gray-300">{text}</p></div>)}
+              {(isMetaDAO ? ["The mock dataset spans 13 projects across the futarchy ecosystem.", "Nine of 13 tracked decisions are currently marked as trading.", "Tracked mock decision volume totals $7.20M across all projects."] : ["Execution rate reached 93.4% across tracked transactions.", "4-of-7 is the most common threshold among high-value vaults.", "Signer activity increased for five consecutive weeks."]).map((text, index) => <div key={text} className="flex gap-3 rounded-lg border border-green-900/30 bg-green-950/20 p-3"><span className="font-mono text-xs text-green-500">0{index + 1}</span><p className="text-sm leading-6 text-gray-300">{text}</p></div>)}
             </CardContent>
           </Card>
         </div>

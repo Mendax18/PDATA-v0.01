@@ -2568,7 +2568,7 @@ export default function SolanaDAODashboard() {
                 <div>
                   <CardTitle className="text-orange-400">Top Solana Projects</CardTitle>
                   <CardDescription className="text-orange-300">
-                    A list of top performing projects on Solana {isLoadingDAOData && "(Loading mock data...)"}
+                    A list of top performing projects on Solana
                   </CardDescription>
                 </div>
 

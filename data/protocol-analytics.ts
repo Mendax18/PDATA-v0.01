@@ -1,27 +1,36 @@
 export type ProtocolId = "realms" | "metadao" | "squads"
 
 export const metaDaoMetrics = [
-  { label: "Active markets", value: "14", detail: "+3 this month" },
-  { label: "Decision volume", value: "$8.42M", detail: "Across conditional markets" },
-  { label: "Resolved decisions", value: "67", detail: "71.6% approved" },
-  { label: "Unique traders", value: "1,284", detail: "+12.8% in 30d" },
+  { label: "Active markets", value: "9", detail: "Across 13 ecosystem projects" },
+  { label: "Decision volume", value: "$7.20M", detail: "In the expanded mock dataset" },
+  { label: "Resolved decisions", value: "4", detail: "30.8% of tracked decisions" },
+  { label: "Ecosystem projects", value: "13", detail: "One decision per project" },
 ]
 
 export const metaDaoActivity = [
-  { date: "Feb 03", volume: 420, markets: 7 },
-  { date: "Feb 10", volume: 610, markets: 8 },
-  { date: "Feb 17", volume: 540, markets: 9 },
-  { date: "Feb 24", volume: 880, markets: 10 },
-  { date: "Mar 03", volume: 760, markets: 11 },
-  { date: "Mar 10", volume: 1120, markets: 12 },
-  { date: "Mar 17", volume: 980, markets: 14 },
+  { date: "Jul 04", volume: 486, markets: 4 },
+  { date: "Jul 11", volume: 702, markets: 5 },
+  { date: "Jul 18", volume: 648, markets: 6 },
+  { date: "Jul 25", volume: 936, markets: 7 },
+  { date: "Aug 01", volume: 884, markets: 7 },
+  { date: "Aug 08", volume: 1086, markets: 8 },
+  { date: "Aug 15", volume: 1240, markets: 9 },
 ]
 
 export const metaDaoMarkets = [
   { title: "Increase META liquidity incentives", organization: "MetaDAO", pass: 0.68, fail: 0.42, volume: "$1.24M", status: "Trading" },
   { title: "Fund Futarchy SDK v2", organization: "Futarchy Labs", pass: 0.81, fail: 0.55, volume: "$842K", status: "Trading" },
-  { title: "Acquire protocol-owned liquidity", organization: "MetaDAO", pass: 0.57, fail: 0.48, volume: "$536K", status: "Trading" },
-  { title: "Launch grants cohort 04", organization: "MetaDAO", pass: 0.74, fail: 0.61, volume: "$319K", status: "Resolved" },
+  { title: "Expand validator strategy capacity", organization: "Avici", pass: 0.72, fail: 0.51, volume: "$736K", status: "Trading" },
+  { title: "Ship private transfer beta", organization: "Umbra", pass: 0.63, fail: 0.46, volume: "$654K", status: "Trading" },
+  { title: "Renew contributor rewards program", organization: "Loyal", pass: 0.77, fail: 0.58, volume: "$598K", status: "Resolved" },
+  { title: "Add streamed payroll collateral", organization: "Paystream", pass: 0.66, fail: 0.49, volume: "$546K", status: "Trading" },
+  { title: "Deploy treasury strategy vault", organization: "Solomon", pass: 0.59, fail: 0.44, volume: "$487K", status: "Trading" },
+  { title: "Increase node operator allocation", organization: "P2P", pass: 0.71, fail: 0.57, volume: "$432K", status: "Resolved" },
+  { title: "Launch isolated lending market", organization: "Jurassic Finance", pass: 0.62, fail: 0.39, volume: "$398K", status: "Trading" },
+  { title: "Extend creator market incentives", organization: "Futardio", pass: 0.69, fail: 0.53, volume: "$362K", status: "Trading" },
+  { title: "Approve autonomous agent budget", organization: "Superclaw", pass: 0.75, fail: 0.47, volume: "$341K", status: "Resolved" },
+  { title: "Fund onchain reputation pilot", organization: "Spark", pass: 0.64, fail: 0.52, volume: "$297K", status: "Trading" },
+  { title: "Migrate reserves to managed vaults", organization: "Bedrock", pass: 0.58, fail: 0.45, volume: "$266K", status: "Resolved" },
 ]
 
 export const squadsMetrics = [
