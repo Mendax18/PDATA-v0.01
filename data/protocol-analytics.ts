@@ -1,5 +1,11 @@
 export type ProtocolId = "realms" | "metadao" | "squads"
 
+export const futardioStats = [
+  { label: "Unique Users", value: 12623 },
+  { label: "Unique TX", value: 85881 },
+  { label: "Total Calls", value: 207427 },
+]
+
 export const metaDaoMetrics = [
   { label: "Active markets", value: "9", detail: "Across 13 ecosystem projects" },
   { label: "Decision volume", value: "$7.20M", detail: "In the expanded mock dataset" },

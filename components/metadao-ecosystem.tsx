@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { Activity, Search, TrendingUp, Vote } from "lucide-react"
-import { metaDaoMarkets, metaDaoMetrics } from "@/data/protocol-analytics"
+import { futardioStats, metaDaoMarkets, metaDaoMetrics } from "@/data/protocol-analytics"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -54,6 +54,19 @@ export function MetaDAOEcosystem() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Futard.io launchpad</span>
+          <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2">
+            {futardioStats.map((stat, index) => (
+              <div key={stat.label} className="flex items-baseline gap-2">
+                {index > 0 && <span className="hidden h-4 w-px bg-white/10 sm:block" aria-hidden="true" />}
+                <span className="text-lg font-semibold tabular-nums text-gray-100">{stat.value.toLocaleString()}</span>
+                <span className="text-xs text-gray-500">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {metaDaoMetrics.map((metric, index) => {
             const Icon = metricIcons[index]
